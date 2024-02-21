@@ -1,77 +1,60 @@
-import { useState, useRef } from 'react';
-
-interface Stopwatch {
-    startTime: number | null;
-    laps: number[];
-    isRunning: boolean;
-}
+import { useState } from "react";
 
 const useStopwatch = (): {
-    startTime: number | null;
-    getElapsedTime: () => number;
-    laps: number[];
-    lap: () => void;
-    stop: () => void;
-    reset: () => void;
-    start: () => void;
+  startTime: number;
+  getElapsedTime: () => number;
+  laps: number[];
+  lap: () => void;
+  stop: () => void;
+  reset: () => void;
+  start: () => void;
+  isRunning: boolean;
 } => {
-    const [stopwatch, setStopwatch] = useState<Stopwatch>({
-        startTime: null,
-        laps: [],
-        isRunning: false,
-    });
+  const [startTime, setStartTime] = useState<number>(0);
+  const [stopTime, setStopTime] = useState<number>(0);
+  const [laps, setLaps] = useState<number[]>([]);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
 
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const start = () => {
+    setLaps([]);
+    setStartTime(Date.now());
+    setIsRunning(true);
+  };
 
-    const start = () => {
-        setStopwatch((prevStopwatch) => ({
-            laps: [],
-            startTime: Date.now(),
-            isRunning: true,
-        }));
-    };
+  const stop = () => {
+    setIsRunning(false);
+    setStopTime(Date.now());
+  };
 
-    const stop = () => {
-        if (timerRef.current) clearInterval(timerRef.current);
-        setStopwatch((prevStopwatch) => ({
-            ...prevStopwatch,
-            isRunning: false,
-        }));
-    };
+  const reset = () => {
+    setStartTime(0);
+    setLaps([]);
+    setIsRunning(false);
+    setStopTime(0);
+  };
 
-    const reset = () => {
-        if (timerRef.current) clearInterval(timerRef.current);
-        setStopwatch({
-            startTime: null,
-            laps: [],
-            isRunning: false,
-        });
-    };
+  const lap = () => {
+    if (isRunning && laps) {
+      setLaps([...laps, Date.now()]);
+    }
+  };
 
-    const lap = () => {
-        if (stopwatch.startTime) {
-            setStopwatch((prevStopwatch) => ({
-                ...prevStopwatch,
-                laps: [...prevStopwatch.laps, Date.now()],
-            }));
-        }
-    };
+  const getElapsedTime = () => {
+    if (!startTime) return 0;
+    if (!stopTime) return Date.now() - startTime;
+    return stopTime - startTime;
+  };
 
-    const getElapsedTime = () => {
-        if (!stopwatch.startTime) return 0;
-        const now = Date.now();
-        return now - stopwatch.startTime;
-    };
-
-    return {
-        startTime: stopwatch.startTime,
-        getElapsedTime,
-        laps: stopwatch.laps,
-        lap,
-        stop,
-        start,
-        reset,
-    };
+  return {
+    startTime,
+    getElapsedTime,
+    laps,
+    lap,
+    stop,
+    start,
+    reset,
+    isRunning,
+  };
 };
 
 export default useStopwatch;
