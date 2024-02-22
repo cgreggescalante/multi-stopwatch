@@ -1,12 +1,12 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
-import StopwatchComponent from "../components/stopwatchComponent";
+import MultiStopwatchComponent from "../components/multiStopwatchComponent";
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
     <>
       MultiStopwatch
-      <StopwatchComponent />
+      <MultiStopwatchComponent />
     </>
   );
 };

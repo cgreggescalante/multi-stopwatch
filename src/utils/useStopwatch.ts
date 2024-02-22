@@ -1,29 +1,31 @@
 import { useState } from "react";
 
-const useStopwatch = (): {
-  startTime: number;
-  getElapsedTime: () => number;
-  laps: number[];
-  lap: () => void;
-  stop: () => void;
-  reset: () => void;
-  start: () => void;
-  isRunning: boolean;
-} => {
+interface StopwatchData {
+  startTime: number,
+  getElapsedTime: () => number,
+  laps: number[],
+  lap: (time?: number) => void,
+  stop: (time?: number) => void,
+  start: (time?: number) => void,
+  reset: () => void,
+  isRunning: boolean
+}
+
+const useStopwatch = (): StopwatchData => {
   const [startTime, setStartTime] = useState<number>(0);
   const [stopTime, setStopTime] = useState<number>(0);
   const [laps, setLaps] = useState<number[]>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
-  const start = () => {
+  const start = (time = Date.now()) => {
     setLaps([]);
-    setStartTime(Date.now());
+    setStartTime(time);
     setIsRunning(true);
   };
 
-  const stop = () => {
+  const stop = (time = Date.now()) => {
     setIsRunning(false);
-    setStopTime(Date.now());
+    setStopTime(time);
   };
 
   const reset = () => {
@@ -33,9 +35,9 @@ const useStopwatch = (): {
     setStopTime(0);
   };
 
-  const lap = () => {
+  const lap = (time = Date.now()) => {
     if (isRunning && laps) {
-      setLaps([...laps, Date.now()]);
+      setLaps([...laps, time]);
     }
   };
 
