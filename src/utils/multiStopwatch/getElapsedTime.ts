@@ -1,12 +1,9 @@
-import {StopwatchData} from "./data";
+import { StopwatchData } from './data';
 
-export const getElapsedTime = (
-    {startTime, stopTime}: StopwatchData,
-    now: number,
-) => {
-    if (!startTime) return 0;
+export const getElapsedTime = ({ startTime, stopTime }: StopwatchData, now: number) => {
+  if (!startTime) return 0;
 
-    if (!stopTime) return now - startTime;
+  if (!stopTime) return now - startTime;
 
-    return stopTime - startTime;
+  return stopTime - startTime;
 };

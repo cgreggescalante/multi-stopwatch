@@ -1,27 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Heading,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import { formatMs, useStopwatch } from "utils";
+import React, { useEffect, useState } from 'react';
+import { Button, Heading, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { formatMs, useStopwatch } from 'utils';
 
 const StopwatchComponent = () => {
-  const {
-    getElapsedTime,
-    lap,
-    laps,
-    reset,
-    startTime,
-    start,
-    stop,
-    isRunning,
-  } = useStopwatch();
+  const { getElapsedTime, lap, laps, reset, startTime, start, stop, isRunning } = useStopwatch();
   const [elapsedTime, setElapsedTime] = useState<number>();
 
   useEffect(() => {
@@ -45,7 +27,7 @@ const StopwatchComponent = () => {
           Reset
         </Button>
       )}
-      <Table variant={"simple"} size={"lg"}>
+      <Table variant={'simple'} size={'lg'}>
         <Thead>
           <Tr>
             <Th>#</Th>

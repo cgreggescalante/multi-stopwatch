@@ -1,4 +1,4 @@
-import {StopwatchData} from "./data";
+import { StopwatchData } from './data';
 
-export const isRunning = ({startTime, stopTime}: StopwatchData) =>
-    startTime !== 0 && stopTime === 0;
+export const isRunning = ({ startTime, stopTime }: StopwatchData) =>
+  startTime !== 0 && stopTime === 0;

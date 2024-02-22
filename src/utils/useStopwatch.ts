@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 interface StopwatchData {
-  startTime: number,
-  getElapsedTime: () => number,
-  laps: number[],
-  lap: (time?: number) => void,
-  stop: (time?: number) => void,
-  start: (time?: number) => void,
-  reset: () => void,
-  isRunning: boolean
+  startTime: number;
+  getElapsedTime: () => number;
+  laps: number[];
+  lap: (time?: number) => void;
+  stop: (time?: number) => void;
+  start: (time?: number) => void;
+  reset: () => void;
+  isRunning: boolean;
 }
 
 const useStopwatch = (): StopwatchData => {

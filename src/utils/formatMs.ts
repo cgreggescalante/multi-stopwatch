@@ -4,12 +4,12 @@ const formatMs = (ms: number) => {
   const hours = Math.floor(ms / 3600000);
   const remainingMs = Math.floor((ms % 1000) / 10)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, '0');
 
   if (hours) {
-    return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${remainingMs}`;
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${remainingMs}`;
   } else if (minutes) {
-    return `${minutes}:${seconds.toString().padStart(2, "0")}.${remainingMs}`;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}.${remainingMs}`;
   }
 
   return `${seconds}.${remainingMs}`;

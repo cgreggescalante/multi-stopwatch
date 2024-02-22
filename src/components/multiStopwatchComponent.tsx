@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -9,9 +9,9 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
-import { StopwatchRow } from "./multiStopwatch/stopwatchRow";
-import { anyRunning, useMultiStopwatch } from "utils";
+} from '@chakra-ui/react';
+import { StopwatchRow } from './multiStopwatch/stopwatchRow';
+import { anyRunning, useMultiStopwatch } from 'utils';
 
 const MultiStopwatchComponent = () => {
   const {
@@ -39,34 +39,24 @@ const MultiStopwatchComponent = () => {
   return (
     <>
       {/* Controls */}
-      <ButtonGroup isAttached variant={"solid"}>
-        <Button colorScheme={"green"} onClick={() => startAll()}>
+      <ButtonGroup isAttached variant={'solid'}>
+        <Button colorScheme={'green'} onClick={() => startAll()}>
           Start All
         </Button>
-        <Button
-          isDisabled={!anyRunning(stopwatches)}
-          colorScheme={"red"}
-          onClick={() => stopAll()}
-        >
+        <Button isDisabled={!anyRunning(stopwatches)} colorScheme={'red'} onClick={() => stopAll()}>
           Stop All
         </Button>
-        <Button colorScheme={"yellow"} onClick={() => resetAll()}>
+        <Button colorScheme={'yellow'} onClick={() => resetAll()}>
           Reset All
         </Button>
       </ButtonGroup>
 
       <TableContainer>
-        <Table size={"sm"} m={0} p={0}>
+        <Table size={'sm'} m={0} p={0}>
           <Thead>
             <Tr>
               <Th />
-              <Th
-                colSpan={Math.max(
-                  ...stopwatches.map((sw) => sw.laps.length + 1),
-                )}
-              >
-                Laps
-              </Th>
+              <Th colSpan={Math.max(...stopwatches.map(sw => sw.laps.length + 1))}>Laps</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -85,9 +75,9 @@ const MultiStopwatchComponent = () => {
             <Tr>
               <Td colSpan={1}>
                 <Button
-                  variant={"solid"}
+                  variant={'solid'}
                   isDisabled={anyRunning(stopwatches)}
-                  colorScheme={"green"}
+                  colorScheme={'green'}
                   onClick={createStopwatch}
                 >
                   Add
