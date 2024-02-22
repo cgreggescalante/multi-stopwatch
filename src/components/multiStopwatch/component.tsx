@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
-import { StopwatchRow } from './multiStopwatch/stopwatchRow';
+import { StopwatchRow } from './stopwatchRow';
 import { anyRunning, useMultiStopwatch } from 'utils';
 import { AddIcon } from '@chakra-ui/icons';
 
