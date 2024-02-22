@@ -11,7 +11,16 @@ interface MultiStopwatchData {
   lap: (index: number) => void;
   stop: (index: number) => void;
   stopwatches: StopwatchData[];
+  setName: (index: number, name: string) => void;
 }
+
+const createEmptyStopwatch = (n: number): StopwatchData => ({
+  name: `Stopwatch ${n}`,
+  startTime: 0,
+  stopTime: 0,
+  laps: [],
+  isRunning: false,
+});
 
 const useMultiStopwatch = (): MultiStopwatchData => {
   const [stopwatches, setStopwatches] = useState<StopwatchData[]>([]);
@@ -19,18 +28,12 @@ const useMultiStopwatch = (): MultiStopwatchData => {
   const createStopwatch = () => {
     setStopwatches(prevStopwatches => [
       ...prevStopwatches,
-      {
-        startTime: 0,
-        stopTime: 0,
-        laps: [],
-        isRunning: false,
-      },
+      createEmptyStopwatch(prevStopwatches.length + 1),
     ]);
   };
 
   const removeStopwatch = (index: number) => {
-    if (stopwatches.length == 1)
-      setStopwatches([{ startTime: 0, stopTime: 0, laps: [], isRunning: false }]);
+    if (stopwatches.length == 1) setStopwatches([createEmptyStopwatch(1)]);
     else
       setStopwatches(prevStopwatches =>
         prevStopwatches.slice(0, index).concat(prevStopwatches.slice(index + 1)),
@@ -49,7 +52,8 @@ const useMultiStopwatch = (): MultiStopwatchData => {
 
   const resetAll = () => {
     setStopwatches(prevStopwatches =>
-      prevStopwatches.map(_ => ({
+      prevStopwatches.map(data => ({
+        ...data,
         startTime: 0,
         stopTime: 0,
         laps: [],
@@ -70,6 +74,10 @@ const useMultiStopwatch = (): MultiStopwatchData => {
     stopwatches[index].stopTime = Date.now();
   };
 
+  const setName = (index: number, name: string) => {
+    stopwatches[index].name = name;
+  };
+
   return {
     createStopwatch,
     removeStopwatch,
@@ -80,6 +88,7 @@ const useMultiStopwatch = (): MultiStopwatchData => {
     start,
     lap,
     stop,
+    setName,
   };
 };
 

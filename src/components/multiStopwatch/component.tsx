@@ -15,6 +15,7 @@ const MultiStopwatchComponent = () => {
     startAll,
     resetAll,
     lap,
+    setName,
   } = useMultiStopwatch();
 
   const [now, setNow] = useState<number>(Date.now());
@@ -59,6 +60,7 @@ const MultiStopwatchComponent = () => {
             start={() => start(index)}
             remove={() => removeStopwatch(index)}
             now={now}
+            setName={name => setName(index, name)}
           />
         ))}
       </VStack>

@@ -12,11 +12,12 @@ interface StopwatchRowProps {
   start: () => void;
   now: number;
   remove: () => void;
+  setName: (name: string) => void;
 }
 
-export const StopwatchRow = ({ sw, index, stop, lap, now, remove }: StopwatchRowProps) => (
+export const StopwatchRow = ({ sw, index, stop, lap, now, remove, setName }: StopwatchRowProps) => (
   <HStack spacing={0}>
-    <RowControls sw={sw} stop={stop} lap={lap} index={index} remove={remove} />
+    <RowControls sw={sw} stop={stop} lap={lap} index={index} remove={remove} setName={setName} />
     <Center m={0} p={1}>
       <VStack spacing={0}>
         <Text fontSize={'sm'}>{sw.laps.length + 1}</Text>
