@@ -23,7 +23,7 @@ const createEmptyStopwatch = (n: number): StopwatchData => ({
 });
 
 const useMultiStopwatch = (): MultiStopwatchData => {
-  const [stopwatches, setStopwatches] = useState<StopwatchData[]>([]);
+  const [stopwatches, setStopwatches] = useState<StopwatchData[]>([createEmptyStopwatch(1)]);
 
   const createStopwatch = () => {
     setStopwatches(prevStopwatches => [

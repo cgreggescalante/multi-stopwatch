@@ -17,7 +17,12 @@ export const RowControls = ({ sw, stop, lap, remove, setName }: RowControlsProps
     case StopwatchState.NOT_STARTED:
       return (
         <>
-          <Input size={'md'} value={sw.name} onChange={e => setName(e.target.value)} />
+          <Input
+            maxWidth={'20ch'}
+            size={'md'}
+            value={sw.name}
+            onChange={e => setName(e.target.value)}
+          />
           <IconButton
             colorScheme={'red'}
             onClick={remove}

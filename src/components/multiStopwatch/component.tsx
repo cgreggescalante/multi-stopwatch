@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
 import { StopwatchRow } from './stopwatchRow';
-import { anyRunning, useMultiStopwatch } from 'utils';
+import { anyRunning, StopwatchState, useMultiStopwatch } from 'utils';
 import { AddIcon } from '@chakra-ui/icons';
 
 const MultiStopwatchComponent = () => {
@@ -29,7 +29,7 @@ const MultiStopwatchComponent = () => {
   }, []);
 
   return (
-    <>
+    <Box m={1}>
       {/* Controls */}
       <Center mb={2} mt={2}>
         <ButtonGroup isAttached variant={'solid'}>
@@ -65,16 +65,17 @@ const MultiStopwatchComponent = () => {
         ))}
       </VStack>
 
-      <Center mt={2}>
-        <IconButton
-          colorScheme={'green'}
-          isDisabled={anyRunning(stopwatches)}
-          aria-label={'Add Stopwatch'}
-          onClick={createStopwatch}
-          icon={<AddIcon />}
-        />
-      </Center>
-    </>
+      {stopwatches.some(sw => sw.state === StopwatchState.NOT_STARTED) && (
+        <Center mt={2}>
+          <IconButton
+            colorScheme={'green'}
+            aria-label={'Add Stopwatch'}
+            onClick={createStopwatch}
+            icon={<AddIcon />}
+          />
+        </Center>
+      )}
+    </Box>
   );
 };
 
