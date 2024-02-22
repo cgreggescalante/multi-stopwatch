@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Heading,
@@ -10,10 +9,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import useStopwatch from "../utils/useStopwatch";
-import formatMs from "../utils/formatMs";
-
-
+import { formatMs, useStopwatch } from "utils";
 
 const StopwatchComponent = () => {
   const {

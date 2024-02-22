@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {StopwatchData} from "./data";
 
 interface MultiStopwatchData {
     createStopwatch: () => void,
@@ -12,12 +13,7 @@ interface MultiStopwatchData {
     stopwatches: StopwatchData[]
 }
 
-export interface StopwatchData {
-    startTime: number,
-    stopTime: number,
-    laps: number[],
-    isRunning: boolean
-}
+
 
 const useMultiStopwatch = (): MultiStopwatchData => {
     const [stopwatches, setStopwatches] = useState<StopwatchData[]>([]);
@@ -68,7 +64,17 @@ const useMultiStopwatch = (): MultiStopwatchData => {
         stopwatches[index].stopTime = Date.now();
     }
 
-    return { createStopwatch, removeStopwatch, stopwatches, startAll, stopAll, resetAll, start, lap, stop };
+    return {
+      createStopwatch,
+      removeStopwatch,
+      stopwatches,
+      startAll,
+      stopAll,
+      resetAll,
+      start,
+      lap,
+      stop,
+    };
 }
 
-export default useMultiStopwatch;
+export {useMultiStopwatch};

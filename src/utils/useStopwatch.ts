@@ -59,4 +59,4 @@ const useStopwatch = (): StopwatchData => {
   };
 };
 
-export default useStopwatch;
+export { useStopwatch };
