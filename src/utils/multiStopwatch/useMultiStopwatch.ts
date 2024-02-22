@@ -29,9 +29,12 @@ const useMultiStopwatch = (): MultiStopwatchData => {
   };
 
   const removeStopwatch = (index: number) => {
-    setStopwatches(prevStopwatches =>
-      prevStopwatches.slice(0, index).concat(prevStopwatches.slice(index + 1)),
-    );
+    if (stopwatches.length == 1)
+      setStopwatches([{ startTime: 0, stopTime: 0, laps: [], isRunning: false }]);
+    else
+      setStopwatches(prevStopwatches =>
+        prevStopwatches.slice(0, index).concat(prevStopwatches.slice(index + 1)),
+      );
   };
 
   const startAll = () => {
