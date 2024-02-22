@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StopwatchData } from './data';
+import { StopwatchData, StopwatchState } from './data';
 
 interface MultiStopwatchData {
   createStopwatch: () => void;
@@ -19,7 +19,7 @@ const createEmptyStopwatch = (n: number): StopwatchData => ({
   startTime: 0,
   stopTime: 0,
   laps: [],
-  isRunning: false,
+  state: StopwatchState.NOT_STARTED,
 });
 
 const useMultiStopwatch = (): MultiStopwatchData => {
@@ -42,12 +42,18 @@ const useMultiStopwatch = (): MultiStopwatchData => {
 
   const startAll = () => {
     const time = Date.now();
-    stopwatches.forEach(stopwatch => (stopwatch.startTime = time));
+    stopwatches.forEach(stopwatch => {
+      stopwatch.startTime = time;
+      stopwatch.state = StopwatchState.RUNNING;
+    });
   };
 
   const stopAll = () => {
     const time = Date.now();
-    stopwatches.forEach(stopwatch => (stopwatch.stopTime = time));
+    stopwatches.forEach(stopwatch => {
+      stopwatch.stopTime = time;
+      stopwatch.state = StopwatchState.COMPLETED;
+    });
   };
 
   const resetAll = () => {
@@ -57,13 +63,14 @@ const useMultiStopwatch = (): MultiStopwatchData => {
         startTime: 0,
         stopTime: 0,
         laps: [],
-        isRunning: false,
+        state: StopwatchState.NOT_STARTED,
       })),
     );
   };
 
   const start = (index: number) => {
     stopwatches[index].startTime = Date.now();
+    stopwatches[index].state = StopwatchState.RUNNING;
   };
 
   const lap = (index: number) => {
@@ -72,6 +79,7 @@ const useMultiStopwatch = (): MultiStopwatchData => {
 
   const stop = (index: number) => {
     stopwatches[index].stopTime = Date.now();
+    stopwatches[index].state = StopwatchState.COMPLETED;
   };
 
   const setName = (index: number, name: string) => {

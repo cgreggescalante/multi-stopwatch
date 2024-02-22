@@ -3,5 +3,11 @@ export interface StopwatchData {
   startTime: number;
   stopTime: number;
   laps: number[];
-  isRunning: boolean;
+  state: StopwatchState;
+}
+
+export enum StopwatchState {
+  NOT_STARTED = 'not_started',
+  RUNNING = 'running',
+  COMPLETED = 'completed',
 }
