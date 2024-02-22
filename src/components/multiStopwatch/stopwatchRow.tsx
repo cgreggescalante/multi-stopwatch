@@ -1,4 +1,5 @@
-import { Button, ButtonGroup, Center, Td, Text, Tr, VStack } from '@chakra-ui/react';
+import { Button, ButtonGroup, Center, IconButton, Td, Text, Tr, VStack } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { formatMs, getCurrentLap, getElapsedTime, isRunning, StopwatchData } from 'utils';
 
@@ -31,12 +32,15 @@ export const StopwatchRow = ({ sw, index, stop, lap, start, now, remove }: Stopw
             </>
           ) : (
             <ButtonGroup isAttached variant={'solid'}>
-              <Button colorScheme={'green'} isDisabled={isRunning(sw)} onClick={start}>
+              <Button colorScheme={'green'} onClick={start}>
                 Start
               </Button>
-              <Button colorScheme={'red'} onClick={remove}>
-                Remove
-              </Button>
+              <IconButton
+                colorScheme={'red'}
+                onClick={remove}
+                aria-label={'Start'}
+                icon={<DeleteIcon />}
+              />
             </ButtonGroup>
           )}
         </ButtonGroup>

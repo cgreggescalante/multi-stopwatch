@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
+  Center,
+  IconButton,
   Table,
   TableContainer,
   Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
 } from '@chakra-ui/react';
 import { StopwatchRow } from './multiStopwatch/stopwatchRow';
 import { anyRunning, useMultiStopwatch } from 'utils';
+import { AddIcon } from '@chakra-ui/icons';
 
 const MultiStopwatchComponent = () => {
   const {
@@ -39,26 +38,26 @@ const MultiStopwatchComponent = () => {
   return (
     <>
       {/* Controls */}
-      <ButtonGroup isAttached variant={'solid'}>
-        <Button colorScheme={'green'} onClick={() => startAll()}>
-          Start All
-        </Button>
-        <Button isDisabled={!anyRunning(stopwatches)} colorScheme={'red'} onClick={() => stopAll()}>
-          Stop All
-        </Button>
-        <Button colorScheme={'yellow'} onClick={() => resetAll()}>
-          Reset All
-        </Button>
-      </ButtonGroup>
+      <Center mb={2} mt={2}>
+        <ButtonGroup isAttached variant={'solid'}>
+          <Button colorScheme={'green'} onClick={() => startAll()}>
+            Start All
+          </Button>
+          <Button
+            isDisabled={!anyRunning(stopwatches)}
+            colorScheme={'red'}
+            onClick={() => stopAll()}
+          >
+            Stop All
+          </Button>
+          <Button colorScheme={'yellow'} onClick={() => resetAll()}>
+            Reset All
+          </Button>
+        </ButtonGroup>
+      </Center>
 
       <TableContainer>
         <Table size={'sm'} m={0} p={0}>
-          <Thead>
-            <Tr>
-              <Th />
-              <Th colSpan={Math.max(...stopwatches.map(sw => sw.laps.length + 1))}>Laps</Th>
-            </Tr>
-          </Thead>
           <Tbody>
             {stopwatches.map((sw, index) => (
               <StopwatchRow
@@ -72,21 +71,19 @@ const MultiStopwatchComponent = () => {
                 now={now}
               />
             ))}
-            <Tr>
-              <Td colSpan={1}>
-                <Button
-                  variant={'solid'}
-                  isDisabled={anyRunning(stopwatches)}
-                  colorScheme={'green'}
-                  onClick={createStopwatch}
-                >
-                  Add
-                </Button>
-              </Td>
-            </Tr>
           </Tbody>
         </Table>
       </TableContainer>
+
+      <Center mt={2}>
+        <IconButton
+          colorScheme={'green'}
+          isDisabled={anyRunning(stopwatches)}
+          aria-label={'Add Stopwatch'}
+          onClick={createStopwatch}
+          icon={<AddIcon />}
+        />
+      </Center>
     </>
   );
 };
