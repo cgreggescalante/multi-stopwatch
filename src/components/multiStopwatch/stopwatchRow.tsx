@@ -1,7 +1,17 @@
-import { Button, ButtonGroup, Center, IconButton, Td, Text, Tr, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Center,
+  HStack,
+  IconButton,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { formatMs, getCurrentLap, getElapsedTime, isRunning, StopwatchData } from 'utils';
+import { isCompleted } from '../../utils/multiStopwatch/isCompleted';
 
 interface StopwatchRowProps {
   sw: StopwatchData;
@@ -13,54 +23,22 @@ interface StopwatchRowProps {
   remove: () => void;
 }
 
-export const StopwatchRow = ({ sw, index, stop, lap, start, now, remove }: StopwatchRowProps) => (
-  <Tr key={index}>
-    <Td>
-      <VStack spacing={2}>
-        <Text fontSize={'lg'} as={'b'}>
-          {index + 1}
+export const StopwatchRow = ({ sw, index, stop, lap, now, remove }: StopwatchRowProps) => (
+  <HStack spacing={0}>
+    <RowControls sw={sw} stop={stop} lap={lap} index={index} remove={remove} />
+    <Center m={0} p={1}>
+      <VStack spacing={0}>
+        <Text fontSize={'sm'}>{sw.laps.length + 1}</Text>
+        <Text fontSize={'md'} as={'b'}>
+          {formatMs(getElapsedTime(sw, now))}
         </Text>
-        <ButtonGroup size={'md'} isAttached variant={'solid'}>
-          {isRunning(sw) ? (
-            <>
-              <Button colorScheme={'blue'} isDisabled={!isRunning(sw)} onClick={lap}>
-                Lap
-              </Button>
-              <Button colorScheme={'red'} isDisabled={!isRunning(sw)} onClick={stop}>
-                Stop
-              </Button>
-            </>
-          ) : (
-            <ButtonGroup isAttached variant={'solid'}>
-              <Button colorScheme={'green'} onClick={start}>
-                Start
-              </Button>
-              <IconButton
-                colorScheme={'red'}
-                onClick={remove}
-                aria-label={'Start'}
-                icon={<DeleteIcon />}
-              />
-            </ButtonGroup>
-          )}
-        </ButtonGroup>
+        <Text fontSize={'sm'}>{formatMs(getCurrentLap(sw, now))}</Text>
       </VStack>
-    </Td>
-    <Td>
-      <Center>
-        <VStack spacing={0}>
-          <Text fontSize={'sm'}>{sw.laps.length + 1}</Text>
-          <Text fontSize={'md'} as={'b'}>
-            {formatMs(getElapsedTime(sw, now))}
-          </Text>
-          <Text fontSize={'sm'}>{formatMs(getCurrentLap(sw, now))}</Text>
-        </VStack>
-      </Center>
-    </Td>
+    </Center>
     {sw.laps.map((_, i) => (
       <LapData key={i} laps={sw.laps} startTime={sw.startTime} index={sw.laps.length - i - 1} />
     ))}
-  </Tr>
+  </HStack>
 );
 
 interface LapDataProps {
@@ -70,7 +48,7 @@ interface LapDataProps {
 }
 
 const LapData = ({ laps, startTime, index }: LapDataProps) => (
-  <Td>
+  <Box m={0} p={1}>
     <Center>
       <VStack spacing={0}>
         <Text fontSize={'sm'}>{index + 1}</Text>
@@ -80,5 +58,44 @@ const LapData = ({ laps, startTime, index }: LapDataProps) => (
         <Text fontSize={'sm'}>{formatMs(laps[index] - (index ? laps[index - 1] : startTime))}</Text>
       </VStack>
     </Center>
-  </Td>
+  </Box>
+);
+
+interface RowControlsProps {
+  sw: StopwatchData;
+  stop: () => void;
+  lap: () => void;
+  index: number;
+  remove: () => void;
+}
+
+const RowControls = ({ sw, stop, lap, index, remove }: RowControlsProps) => (
+  <VStack spacing={2} m={0} p={1}>
+    <Text fontSize={'lg'} as={'b'}>
+      {index + 1}
+    </Text>
+
+    {/* If the stopwatch is running, show lap and stop buttons */}
+    {/* If the stopwatch has not started, show remove button */}
+    {/* If the stopwatch is complete, show none */}
+    {isRunning(sw) ? (
+      <ButtonGroup size={'md'} isAttached variant={'solid'}>
+        <Button colorScheme={'blue'} isDisabled={!isRunning(sw)} onClick={lap}>
+          Lap
+        </Button>
+        <Button colorScheme={'red'} isDisabled={!isRunning(sw)} onClick={stop}>
+          Stop
+        </Button>
+      </ButtonGroup>
+    ) : (
+      !isCompleted(sw) && (
+        <IconButton
+          colorScheme={'red'}
+          onClick={remove}
+          aria-label={'Start'}
+          icon={<DeleteIcon />}
+        />
+      )
+    )}
+  </VStack>
 );

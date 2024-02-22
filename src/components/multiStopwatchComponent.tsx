@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Center,
-  IconButton,
-  Table,
-  TableContainer,
-  Tbody,
-} from '@chakra-ui/react';
+import { Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
 import { StopwatchRow } from './multiStopwatch/stopwatchRow';
 import { anyRunning, useMultiStopwatch } from 'utils';
 import { AddIcon } from '@chakra-ui/icons';
@@ -56,24 +48,20 @@ const MultiStopwatchComponent = () => {
         </ButtonGroup>
       </Center>
 
-      <TableContainer>
-        <Table size={'sm'} m={0} p={0}>
-          <Tbody>
-            {stopwatches.map((sw, index) => (
-              <StopwatchRow
-                key={index}
-                sw={sw}
-                index={index}
-                stop={() => stop(index)}
-                lap={() => lap(index)}
-                start={() => start(index)}
-                remove={() => removeStopwatch(index)}
-                now={now}
-              />
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <VStack align={'flex-start'} spacing={0}>
+        {stopwatches.map((sw, index) => (
+          <StopwatchRow
+            key={index}
+            sw={sw}
+            index={index}
+            stop={() => stop(index)}
+            lap={() => lap(index)}
+            start={() => start(index)}
+            remove={() => removeStopwatch(index)}
+            now={now}
+          />
+        ))}
+      </VStack>
 
       <Center mt={2}>
         <IconButton
