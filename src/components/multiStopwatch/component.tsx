@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
 import { StopwatchRow } from './stopwatchRow';
-import { MultiStopwatchState, StopwatchState, useMultiStopwatch } from 'utils';
+import { MultiStopwatchState, toCSV, useMultiStopwatch } from 'utils';
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { Link } from 'gatsby';
 
@@ -17,6 +17,20 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
     lap,
     setStopwatchName,
   } = useMultiStopwatch(id);
+
+  const exportCSV = () => {
+    const csv = toCSV(multiStopwatch);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    console.log('Downloading');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `${multiStopwatch.name}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <Box m={1}>
@@ -65,7 +79,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
         ))}
       </VStack>
 
-      {multiStopwatch.stopwatches.some(sw => sw.state === StopwatchState.NOT_STARTED) && (
+      {multiStopwatch.state == MultiStopwatchState.NOT_STARTED && (
         <Center mt={2}>
           <IconButton
             colorScheme={'green'}
@@ -74,6 +88,10 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
             icon={<AddIcon />}
           />
         </Center>
+      )}
+
+      {multiStopwatch.state == MultiStopwatchState.COMPLETE && (
+        <Button onClick={exportCSV}>Export CSV</Button>
       )}
     </Box>
   );
