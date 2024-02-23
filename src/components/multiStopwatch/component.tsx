@@ -2,7 +2,8 @@ import React from 'react';
 import { Box, Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
 import { StopwatchRow } from './stopwatchRow';
 import { anyRunning, StopwatchState, useMultiStopwatch } from 'utils';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { Link } from 'gatsby';
 
 const MultiStopwatchComponent = ({ id }: { id: string }) => {
   const {
@@ -19,6 +20,10 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
 
   return (
     <Box m={1}>
+      <Link to={'/'}>
+        <ArrowBackIcon boxSize={8} />
+      </Link>
+
       {/* Controls */}
       <Center mb={2} mt={2}>
         <ButtonGroup isAttached variant={'solid'}>
