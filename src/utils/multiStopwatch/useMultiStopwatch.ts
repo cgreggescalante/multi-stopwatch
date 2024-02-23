@@ -48,63 +48,30 @@ const useMultiStopwatch = (id: string): MultiStopwatchActions => {
     getFromLocalStorage(id),
   );
 
-  const updateLocalStorage = (updatedData: MultiStopwatchData) => {
-    localStorage.setItem(id, JSON.stringify(updatedData));
+  const updateMultiStopwatch = (func: (state: MultiStopwatchData) => MultiStopwatchData) => {
+    const newState = func(multiStopwatchData);
+    setMultiStopwatchData(newState);
+    localStorage.setItem(id, JSON.stringify(newState));
   };
 
-  const createStopwatch = () => {
-    const newState = addStopwatch(multiStopwatchData);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const createStopwatch = () => updateMultiStopwatch(addStopwatch);
 
-  const handleRemoveStopwatch = (index: number) => {
-    const newState = removeStopwatch(multiStopwatchData, index);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleRemoveStopwatch = (index: number) => updateMultiStopwatch(removeStopwatch(index));
 
-  const handleStartAll = (time = Date.now()) => {
-    const newState = startAll(multiStopwatchData, time);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleStartAll = (time = Date.now()) => updateMultiStopwatch(startAll(time));
 
-  const handleStopAll = (time = Date.now()) => {
-    const newState = stopAll(multiStopwatchData, time);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleStopAll = (time = Date.now()) => updateMultiStopwatch(stopAll(time));
 
-  const handleResetAll = () => {
-    const newState = resetAll(multiStopwatchData);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleResetAll = () => updateMultiStopwatch(resetAll);
 
-  const handleLap = (index: number, time = Date.now()) => {
-    const newState = lap(multiStopwatchData, index, time);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleLap = (index: number, time = Date.now()) => updateMultiStopwatch(lap(index, time));
 
-  const handleStop = (index: number, time = Date.now()) => {
-    const newState = stop(multiStopwatchData, index, time);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleStop = (index: number, time = Date.now()) => updateMultiStopwatch(stop(index, time));
 
-  const handleSetStopwatchName = (index: number, name: string) => {
-    const newState = setStopwatchName(multiStopwatchData, index, name);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const handleSetStopwatchName = (index: number, name: string) =>
+    updateMultiStopwatch(setStopwatchName(index, name));
 
-  const setName = (name: string) => {
-    const newState = setMultiStopwatchName(multiStopwatchData, name);
-    setMultiStopwatchData(newState);
-    updateLocalStorage(newState);
-  };
+  const setName = (name: string) => updateMultiStopwatch(setMultiStopwatchName(name));
 
   return {
     createStopwatch,
