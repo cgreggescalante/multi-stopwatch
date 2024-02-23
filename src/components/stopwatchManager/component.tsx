@@ -49,21 +49,21 @@ const StopwatchManager = () => {
 };
 
 const MultiStopwatchLink = ({ id }: { id: string }) => {
-  const { name } = useMultiStopwatch(id);
+  const { multiStopwatch } = useMultiStopwatch(id);
 
   return (
     <Link to={`/stopwatch?id=${id}`}>
-      <Button>{name}</Button>
+      <Button>{multiStopwatch.name}</Button>
     </Link>
   );
 };
 
 const EditMultiStopwatch = ({ id, remove }: { id: string; remove: () => void }) => {
-  const { name, setName } = useMultiStopwatch(id);
+  const { multiStopwatch, setName } = useMultiStopwatch(id);
 
   return (
     <HStack>
-      <Input value={name} onChange={e => setName(e.target.value)} />
+      <Input value={multiStopwatch.name} onChange={e => setName(e.target.value)} />
       <IconButton
         colorScheme={'red'}
         aria-label={'Remove Stopwatch'}

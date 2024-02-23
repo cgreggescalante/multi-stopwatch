@@ -23,7 +23,6 @@ interface MultiStopwatchActions {
   stop: (index: number) => void;
   stopwatches: Stopwatch[];
   multiStopwatch: MultiStopwatchData;
-  name: string;
   setName: (name: string) => void;
   setStopwatchName: (index: number, name: string) => void;
 }
@@ -83,7 +82,6 @@ const useMultiStopwatch = (id: string): MultiStopwatchActions => {
     stop: handleStop,
     stopwatches: multiStopwatchData.stopwatches,
     multiStopwatch: multiStopwatchData,
-    name: multiStopwatchData.name,
     setName,
     setStopwatchName: handleSetStopwatchName,
   };
