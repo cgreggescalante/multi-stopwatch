@@ -26,11 +26,11 @@ const StopwatchManager = () => {
     <VStack align={'flex-start'}>
       <Heading>Stopwatch Manager</Heading>
 
-      {stopwatches.map(id =>
+      {stopwatches.map((id, index) =>
         editing ? (
-          <EditMultiStopwatch id={id} remove={removeStopwatch(id)} />
+          <EditMultiStopwatch key={index} id={id} remove={removeStopwatch(id)} />
         ) : (
-          <MultiStopwatchLink id={id} />
+          <MultiStopwatchLink key={index} id={id} />
         ),
       )}
 
