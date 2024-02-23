@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
 import { StopwatchRow } from './stopwatchRow';
-import { anyRunning, StopwatchState, useMultiStopwatch } from 'utils';
+import { MultiStopwatchState, StopwatchState, useMultiStopwatch } from 'utils';
 import { AddIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { Link } from 'gatsby';
 
@@ -27,17 +27,25 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
       {/* Controls */}
       <Center mb={2} mt={2}>
         <ButtonGroup isAttached variant={'solid'}>
-          <Button colorScheme={'green'} onClick={() => startAll()}>
+          <Button
+            colorScheme={'green'}
+            isDisabled={multiStopwatch.state != MultiStopwatchState.NOT_STARTED}
+            onClick={() => startAll()}
+          >
             Start All
           </Button>
           <Button
-            isDisabled={!anyRunning(multiStopwatch)}
+            isDisabled={multiStopwatch.state != MultiStopwatchState.RUNNING}
             colorScheme={'red'}
             onClick={() => stopAll()}
           >
             Stop All
           </Button>
-          <Button colorScheme={'yellow'} onClick={() => resetAll()}>
+          <Button
+            colorScheme={'yellow'}
+            isDisabled={multiStopwatch.state == MultiStopwatchState.NOT_STARTED}
+            onClick={() => resetAll()}
+          >
             Reset All
           </Button>
         </ButtonGroup>
@@ -62,10 +70,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
           <IconButton
             colorScheme={'green'}
             aria-label={'Add Stopwatch'}
-            onClick={() => {
-              console.log('Button Press');
-              createStopwatch();
-            }}
+            onClick={createStopwatch}
             icon={<AddIcon />}
           />
         </Center>
