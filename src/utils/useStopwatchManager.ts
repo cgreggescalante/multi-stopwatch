@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MultiStopwatchData } from './multiStopwatch';
+import { MultiStopwatch } from './multiStopwatch';
 
 const STORAGE_KEY = 'stopwatch-list';
 
 export interface StopwatchManagerData {
-  [key: string]: MultiStopwatchData;
+  [key: string]: MultiStopwatch;
 }
 
 export const useStopwatchManager = (): [string[], (value: string[]) => void] => {

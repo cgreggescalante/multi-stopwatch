@@ -3,7 +3,7 @@ import {
   addStopwatch,
   createEmptyMultiStopwatch,
   lap,
-  MultiStopwatchData,
+  MultiStopwatch,
   removeStopwatch,
   resetAll,
   setMultiStopwatchName,
@@ -14,7 +14,7 @@ import {
 } from './multiStopwatch';
 
 interface MultiStopwatchActions {
-  multiStopwatch: MultiStopwatchData;
+  multiStopwatch: MultiStopwatch;
   createStopwatch: () => void;
   removeStopwatch: (index: number) => void;
   startAll: () => void;
@@ -26,21 +26,21 @@ interface MultiStopwatchActions {
   setStopwatchName: (index: number, name: string) => void;
 }
 
-const getFromLocalStorage = (id: string): MultiStopwatchData => {
+const getFromLocalStorage = (id: string): MultiStopwatch => {
   const storedData = localStorage.getItem(id);
   if (storedData) {
-    const data: MultiStopwatchData = JSON.parse(storedData);
+    const data: MultiStopwatch = JSON.parse(storedData);
     return data || createEmptyMultiStopwatch(id);
   }
   return createEmptyMultiStopwatch(id);
 };
 
 const useMultiStopwatch = (id: string): MultiStopwatchActions => {
-  const [multiStopwatch, setMultiStopwatch] = useState<MultiStopwatchData>(() =>
+  const [multiStopwatch, setMultiStopwatch] = useState<MultiStopwatch>(() =>
     getFromLocalStorage(id),
   );
 
-  const updateMultiStopwatch = (func: (state: MultiStopwatchData) => MultiStopwatchData) => {
+  const updateMultiStopwatch = (func: (state: MultiStopwatch) => MultiStopwatch) => {
     const newState = func(multiStopwatch);
     setMultiStopwatch(newState);
     localStorage.setItem(id, JSON.stringify(newState));
