@@ -1,11 +1,12 @@
-import { Center, IconButton, ListItem, UnorderedList, Text } from '@chakra-ui/react';
-import React from 'react';
-import { AddIcon } from '@chakra-ui/icons';
-import { createEmptyMultiStopwatch, useStopwatchManager } from 'utils';
+import { Button, Center, Heading, HStack, IconButton, Input, VStack } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { AddIcon, CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { createEmptyMultiStopwatch, useMultiStopwatch, useStopwatchManager } from 'utils';
 import { Link } from 'gatsby';
 
 const StopwatchManager = () => {
   const [stopwatches, setStopwatches] = useStopwatchManager();
+  const [editing, setEditing] = useState<boolean>(false);
 
   const addStopwatch = () => {
     const newId = Date.now().toString();
@@ -16,31 +17,61 @@ const StopwatchManager = () => {
     setStopwatches([...stopwatches, newId]);
   };
 
-  return (
-    <div>
-      <h1>Stopwatch Manager</h1>
+  const removeStopwatch = (id: string) => () => {
+    localStorage.removeItem(id);
+    setStopwatches(stopwatches.filter(sw => sw !== id));
+  };
 
-      <UnorderedList>
-        {stopwatches.map(id => (
-          <ListItem key={id}>
-            <MultiStopwatchLink id={id} />
-          </ListItem>
-        ))}
-      </UnorderedList>
+  return (
+    <VStack align={'flex-start'}>
+      <Heading>Stopwatch Manager</Heading>
+
+      {stopwatches.map(id =>
+        editing ? (
+          <EditMultiStopwatch id={id} remove={removeStopwatch(id)} />
+        ) : (
+          <MultiStopwatchLink id={id} />
+        ),
+      )}
 
       <Center>
-        <IconButton aria-label={'Add Stopwatch'} onClick={addStopwatch} icon={<AddIcon />} />
+        <HStack>
+          <IconButton
+            aria-label={'Edit MultiStopwatch'}
+            onClick={() => setEditing(!editing)}
+            icon={editing ? <CheckIcon /> : <EditIcon />}
+          />
+          <IconButton aria-label={'Add Stopwatch'} onClick={addStopwatch} icon={<AddIcon />} />
+        </HStack>
       </Center>
-    </div>
+    </VStack>
   );
 };
 
 const MultiStopwatchLink = ({ id }: { id: string }) => {
-  const json = localStorage.getItem(id);
-  if (!json) return <Text>No MultiStopwatch Found</Text>;
+  const { name } = useMultiStopwatch(id);
 
-  const stopwatch = JSON.parse(json);
-  return <Link to={`/stopwatch?id=${id}`}>{stopwatch.name}</Link>;
+  return (
+    <Link to={`/stopwatch?id=${id}`}>
+      <Button>{name}</Button>
+    </Link>
+  );
+};
+
+const EditMultiStopwatch = ({ id, remove }: { id: string; remove: () => void }) => {
+  const { name, setName } = useMultiStopwatch(id);
+
+  return (
+    <HStack>
+      <Input value={name} onChange={e => setName(e.target.value)} />
+      <IconButton
+        colorScheme={'red'}
+        aria-label={'Remove Stopwatch'}
+        onClick={remove}
+        icon={<CloseIcon />}
+      />
+    </HStack>
+  );
 };
 
 export { StopwatchManager };

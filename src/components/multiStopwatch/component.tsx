@@ -15,7 +15,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
     startAll,
     resetAll,
     lap,
-    setName,
+    setStopwatchName,
   } = useMultiStopwatch(id);
 
   return (
@@ -52,7 +52,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
             stop={() => stop(index)}
             lap={() => lap(index)}
             remove={() => removeStopwatch(index)}
-            setName={name => setName(index, name)}
+            setName={name => setStopwatchName(index, name)}
           />
         ))}
       </VStack>

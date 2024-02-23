@@ -10,7 +10,9 @@ interface MultiStopwatchActions {
   lap: (index: number) => void;
   stop: (index: number) => void;
   stopwatches: StopwatchData[];
-  setName: (index: number, name: string) => void;
+  name: string;
+  setName: (name: string) => void;
+  setStopwatchName: (index: number, name: string) => void;
 }
 
 export const createEmptyStopwatch = (n: number): StopwatchData => ({
@@ -143,7 +145,7 @@ const useMultiStopwatch = (id: string): MultiStopwatchActions => {
     updateLocalStorage(data);
   };
 
-  const setName = (index: number, name: string) => {
+  const setStopwatchName = (index: number, name: string) => {
     const data = {
       ...multiStopwatchData,
       stopwatches: multiStopwatchData.stopwatches.map((stopwatch, i) => ({
@@ -156,6 +158,17 @@ const useMultiStopwatch = (id: string): MultiStopwatchActions => {
     updateLocalStorage(data);
   };
 
+  const setName = (name: string) => {
+    setMultiStopwatchData(prevState => {
+      const state = {
+        ...prevState,
+        name: name,
+      };
+      updateLocalStorage(state);
+      return state;
+    });
+  };
+
   return {
     createStopwatch,
     removeStopwatch,
@@ -165,7 +178,9 @@ const useMultiStopwatch = (id: string): MultiStopwatchActions => {
     lap,
     stop,
     stopwatches: multiStopwatchData.stopwatches,
+    name: multiStopwatchData.name,
     setName,
+    setStopwatchName: setStopwatchName,
   };
 };
 
