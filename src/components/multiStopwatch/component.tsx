@@ -9,7 +9,6 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
   const {
     createStopwatch,
     removeStopwatch,
-    stopwatches,
     multiStopwatch,
     stopAll,
     stop,
@@ -45,7 +44,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
       </Center>
 
       <VStack align={'flex-start'} spacing={0}>
-        {stopwatches.map((sw, index) => (
+        {multiStopwatch.stopwatches.map((sw, index) => (
           <StopwatchRow
             key={index}
             sw={sw}
@@ -58,7 +57,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
         ))}
       </VStack>
 
-      {stopwatches.some(sw => sw.state === StopwatchState.NOT_STARTED) && (
+      {multiStopwatch.stopwatches.some(sw => sw.state === StopwatchState.NOT_STARTED) && (
         <Center mt={2}>
           <IconButton
             colorScheme={'green'}

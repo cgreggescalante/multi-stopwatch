@@ -106,3 +106,9 @@ export const addStopwatch = (ms: MultiStopwatchData): MultiStopwatchData => {
 
 export const anyRunning = (ms: MultiStopwatchData): boolean =>
   ms.stopwatches.some(sw => sw.state == StopwatchState.RUNNING);
+
+export const createEmptyMultiStopwatch = (id: string): MultiStopwatchData => ({
+  name: `Multi Stopwatch ${id}`,
+  id,
+  stopwatches: [createEmptyStopwatch(1)],
+});

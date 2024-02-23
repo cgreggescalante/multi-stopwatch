@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   addStopwatch,
+  createEmptyMultiStopwatch,
   lap,
   MultiStopwatchData,
   removeStopwatch,
@@ -11,9 +12,9 @@ import {
   stop,
   stopAll,
 } from './multiStopwatch';
-import { createEmptyStopwatch, Stopwatch } from './stopwatch';
 
 interface MultiStopwatchActions {
+  multiStopwatch: MultiStopwatchData;
   createStopwatch: () => void;
   removeStopwatch: (index: number) => void;
   startAll: () => void;
@@ -21,17 +22,9 @@ interface MultiStopwatchActions {
   resetAll: () => void;
   lap: (index: number) => void;
   stop: (index: number) => void;
-  stopwatches: Stopwatch[];
-  multiStopwatch: MultiStopwatchData;
   setName: (name: string) => void;
   setStopwatchName: (index: number, name: string) => void;
 }
-
-export const createEmptyMultiStopwatch = (id: string): MultiStopwatchData => ({
-  name: `Multi Stopwatch ${id}`,
-  id,
-  stopwatches: [createEmptyStopwatch(1)],
-});
 
 const getFromLocalStorage = (id: string): MultiStopwatchData => {
   const storedData = localStorage.getItem(id);
@@ -43,13 +36,13 @@ const getFromLocalStorage = (id: string): MultiStopwatchData => {
 };
 
 const useMultiStopwatch = (id: string): MultiStopwatchActions => {
-  const [multiStopwatchData, setMultiStopwatchData] = useState<MultiStopwatchData>(() =>
+  const [multiStopwatch, setMultiStopwatch] = useState<MultiStopwatchData>(() =>
     getFromLocalStorage(id),
   );
 
   const updateMultiStopwatch = (func: (state: MultiStopwatchData) => MultiStopwatchData) => {
-    const newState = func(multiStopwatchData);
-    setMultiStopwatchData(newState);
+    const newState = func(multiStopwatch);
+    setMultiStopwatch(newState);
     localStorage.setItem(id, JSON.stringify(newState));
   };
 
@@ -80,8 +73,7 @@ const useMultiStopwatch = (id: string): MultiStopwatchActions => {
     resetAll: handleResetAll,
     lap: handleLap,
     stop: handleStop,
-    stopwatches: multiStopwatchData.stopwatches,
-    multiStopwatch: multiStopwatchData,
+    multiStopwatch,
     setName,
     setStopwatchName: handleSetStopwatchName,
   };
