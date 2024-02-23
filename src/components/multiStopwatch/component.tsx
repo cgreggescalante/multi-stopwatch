@@ -1,32 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Button, ButtonGroup, Center, IconButton, VStack } from '@chakra-ui/react';
 import { StopwatchRow } from './stopwatchRow';
 import { anyRunning, StopwatchState, useMultiStopwatch } from 'utils';
 import { AddIcon } from '@chakra-ui/icons';
 
-const MultiStopwatchComponent = () => {
+const MultiStopwatchComponent = ({ id }: { id: string }) => {
   const {
     createStopwatch,
     removeStopwatch,
     stopwatches,
     stopAll,
-    start,
     stop,
     startAll,
     resetAll,
     lap,
     setName,
-  } = useMultiStopwatch();
-
-  const [now, setNow] = useState<number>(Date.now());
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNow(Date.now());
-    }, 20);
-
-    return () => clearInterval(intervalId);
-  }, []);
+  } = useMultiStopwatch(id);
 
   return (
     <Box m={1}>
@@ -57,9 +46,7 @@ const MultiStopwatchComponent = () => {
             index={index}
             stop={() => stop(index)}
             lap={() => lap(index)}
-            start={() => start(index)}
             remove={() => removeStopwatch(index)}
-            now={now}
             setName={name => setName(index, name)}
           />
         ))}
@@ -70,7 +57,10 @@ const MultiStopwatchComponent = () => {
           <IconButton
             colorScheme={'green'}
             aria-label={'Add Stopwatch'}
-            onClick={createStopwatch}
+            onClick={() => {
+              console.log('Button Press');
+              createStopwatch();
+            }}
             icon={<AddIcon />}
           />
         </Center>

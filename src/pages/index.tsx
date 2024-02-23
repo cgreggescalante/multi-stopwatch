@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { HeadFC, PageProps } from 'gatsby';
-import MultiStopwatch from '../components/multiStopwatch';
 import { Box } from '@chakra-ui/react';
+import StopwatchManager from '../components/stopwatchManager';
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
@@ -12,7 +12,7 @@ const IndexPage: React.FC<PageProps> = () => {
       width={'auto'}
       overflowX={'auto'}
     >
-      <MultiStopwatch />
+      <StopwatchManager />
     </Box>
   );
 };

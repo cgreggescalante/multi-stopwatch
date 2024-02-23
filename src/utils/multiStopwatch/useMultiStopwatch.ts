@@ -1,20 +1,19 @@
 import { useState } from 'react';
-import { StopwatchData, StopwatchState } from './data';
+import { MultiStopwatchData, StopwatchData, StopwatchState } from './data';
 
-interface MultiStopwatchData {
+interface MultiStopwatchActions {
   createStopwatch: () => void;
   removeStopwatch: (index: number) => void;
   startAll: () => void;
   stopAll: () => void;
   resetAll: () => void;
-  start: (index: number) => void;
   lap: (index: number) => void;
   stop: (index: number) => void;
   stopwatches: StopwatchData[];
   setName: (index: number, name: string) => void;
 }
 
-const createEmptyStopwatch = (n: number): StopwatchData => ({
+export const createEmptyStopwatch = (n: number): StopwatchData => ({
   name: `Stopwatch ${n}`,
   startTime: 0,
   stopTime: 0,
@@ -22,80 +21,150 @@ const createEmptyStopwatch = (n: number): StopwatchData => ({
   state: StopwatchState.NOT_STARTED,
 });
 
-const useMultiStopwatch = (): MultiStopwatchData => {
-  const [stopwatches, setStopwatches] = useState<StopwatchData[]>([createEmptyStopwatch(1)]);
+export const createEmptyMultiStopwatch = (id: string): MultiStopwatchData => ({
+  name: `Multi Stopwatch ${id}`,
+  id,
+  stopwatches: [createEmptyStopwatch(1)],
+});
+
+const getFromLocalStorage = (id: string): MultiStopwatchData => {
+  const storedData = localStorage.getItem(id);
+  if (storedData) {
+    const data: MultiStopwatchData = JSON.parse(storedData);
+    return data || createEmptyMultiStopwatch(id);
+  }
+  return createEmptyMultiStopwatch(id);
+};
+
+const useMultiStopwatch = (id: string): MultiStopwatchActions => {
+  const [multiStopwatchData, setMultiStopwatchData] = useState<MultiStopwatchData>(() =>
+    getFromLocalStorage(id),
+  );
+
+  const updateLocalStorage = (updatedData: MultiStopwatchData) => {
+    localStorage.setItem(id, JSON.stringify(updatedData));
+  };
 
   const createStopwatch = () => {
-    setStopwatches(prevStopwatches => [
-      ...prevStopwatches,
-      createEmptyStopwatch(prevStopwatches.length + 1),
-    ]);
+    const data = {
+      ...multiStopwatchData,
+      stopwatches: [
+        ...multiStopwatchData.stopwatches,
+        createEmptyStopwatch(multiStopwatchData.stopwatches.length + 1),
+      ],
+    };
+    setMultiStopwatchData(data);
+    updateLocalStorage(data);
   };
 
   const removeStopwatch = (index: number) => {
-    if (stopwatches.length == 1) setStopwatches([createEmptyStopwatch(1)]);
-    else
-      setStopwatches(prevStopwatches =>
-        prevStopwatches.slice(0, index).concat(prevStopwatches.slice(index + 1)),
-      );
-  };
-
-  const startAll = () => {
-    const time = Date.now();
-    stopwatches.forEach(stopwatch => {
-      stopwatch.startTime = time;
-      stopwatch.state = StopwatchState.RUNNING;
+    setMultiStopwatchData(prevState => {
+      const state = {
+        ...prevState,
+        stopwatches: prevState.stopwatches.filter((_, i) => i !== index),
+      };
+      if (state.stopwatches.length === 0) {
+        state.stopwatches = [createEmptyStopwatch(1)];
+      }
+      updateLocalStorage(state);
+      return state;
     });
   };
 
-  const stopAll = () => {
-    const time = Date.now();
-    stopwatches.forEach(stopwatch => {
-      stopwatch.stopTime = time;
-      stopwatch.state = StopwatchState.COMPLETED;
+  const startAll = (time = Date.now()) => {
+    setMultiStopwatchData(prevState => {
+      const state = {
+        ...prevState,
+        stopwatches: prevState.stopwatches.map(stopwatch => ({
+          ...stopwatch,
+          startTime: time,
+          state: StopwatchState.RUNNING,
+        })),
+      };
+      updateLocalStorage(state);
+      return state;
+    });
+  };
+
+  const stopAll = (time = Date.now()) => {
+    setMultiStopwatchData(prevState => {
+      const state = {
+        ...prevState,
+        stopwatches: prevState.stopwatches.map(stopwatch => ({
+          ...stopwatch,
+          stopTime: time,
+          state: StopwatchState.COMPLETED,
+        })),
+      };
+      updateLocalStorage(state);
+      return state;
     });
   };
 
   const resetAll = () => {
-    setStopwatches(prevStopwatches =>
-      prevStopwatches.map(data => ({
-        ...data,
-        startTime: 0,
-        stopTime: 0,
-        laps: [],
-        state: StopwatchState.NOT_STARTED,
+    setMultiStopwatchData(prevState => {
+      const state = {
+        ...prevState,
+        stopwatches: prevState.stopwatches.map(stopwatch => ({
+          ...createEmptyStopwatch(1),
+          name: stopwatch.name,
+        })),
+      };
+      updateLocalStorage(state);
+      return state;
+    });
+  };
+
+  const lap = (index: number, time = Date.now()) => {
+    setMultiStopwatchData(prevState => {
+      const state = {
+        ...prevState,
+        stopwatches: prevState.stopwatches.map((stopwatch, i) => ({
+          ...stopwatch,
+          laps: index == i ? [...stopwatch.laps, time] : stopwatch.laps,
+        })),
+      };
+      updateLocalStorage(state);
+      return state;
+    });
+  };
+
+  const stop = (index: number, time = Date.now()) => {
+    const data = {
+      ...multiStopwatchData,
+      stopwatches: multiStopwatchData.stopwatches.map((stopwatch, i) => ({
+        ...stopwatch,
+        stopTime: index == i ? time : stopwatch.stopTime,
+        state: index == i ? StopwatchState.COMPLETED : stopwatch.state,
       })),
-    );
-  };
+    };
 
-  const start = (index: number) => {
-    stopwatches[index].startTime = Date.now();
-    stopwatches[index].state = StopwatchState.RUNNING;
-  };
-
-  const lap = (index: number) => {
-    stopwatches[index].laps.push(Date.now());
-  };
-
-  const stop = (index: number) => {
-    stopwatches[index].stopTime = Date.now();
-    stopwatches[index].state = StopwatchState.COMPLETED;
+    setMultiStopwatchData(data);
+    updateLocalStorage(data);
   };
 
   const setName = (index: number, name: string) => {
-    stopwatches[index].name = name;
+    const data = {
+      ...multiStopwatchData,
+      stopwatches: multiStopwatchData.stopwatches.map((stopwatch, i) => ({
+        ...stopwatch,
+        name: index == i ? name : stopwatch.name,
+      })),
+    };
+
+    setMultiStopwatchData(data);
+    updateLocalStorage(data);
   };
 
   return {
     createStopwatch,
     removeStopwatch,
-    stopwatches,
     startAll,
     stopAll,
     resetAll,
-    start,
     lap,
     stop,
+    stopwatches: multiStopwatchData.stopwatches,
     setName,
   };
 };

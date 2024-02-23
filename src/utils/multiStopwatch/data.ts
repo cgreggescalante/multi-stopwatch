@@ -1,3 +1,9 @@
+export interface MultiStopwatchData {
+  name: string;
+  id: string;
+  stopwatches: StopwatchData[];
+}
+
 export interface StopwatchData {
   name: string;
   startTime: number;
