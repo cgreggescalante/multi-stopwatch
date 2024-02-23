@@ -1,10 +1,10 @@
-import { StopwatchData, StopwatchState } from 'utils';
+import { Stopwatch, StopwatchState } from 'utils';
 import { Button, ButtonGroup, IconButton, Input, Text, VStack } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
 
 interface RowControlsProps {
-  sw: StopwatchData;
+  sw: Stopwatch;
   stop: () => void;
   lap: () => void;
   index: number;

@@ -10,6 +10,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
     createStopwatch,
     removeStopwatch,
     stopwatches,
+    multiStopwatch,
     stopAll,
     stop,
     startAll,
@@ -31,7 +32,7 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
             Start All
           </Button>
           <Button
-            isDisabled={!anyRunning(stopwatches)}
+            isDisabled={!anyRunning(multiStopwatch)}
             colorScheme={'red'}
             onClick={() => stopAll()}
           >

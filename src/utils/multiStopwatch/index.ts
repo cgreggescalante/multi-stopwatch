@@ -1,5 +1,3 @@
-export * from './anyRunning';
-export * from './data';
-export * from './getCurrentLap';
-export * from './getElapsedTime';
+export * from './multiStopwatch';
+export * from './stopwatch';
 export * from './useMultiStopwatch';

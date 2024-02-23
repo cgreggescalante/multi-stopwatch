@@ -1,11 +1,11 @@
 import { Center, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { formatMs, getCurrentLap, getElapsedTime, StopwatchData, StopwatchState } from 'utils';
+import { formatMs, getCurrentLap, getElapsedTime, Stopwatch, StopwatchState } from 'utils';
 import { LapData } from './lapData';
 import { RowControls } from './rowControls';
 
 interface StopwatchRowProps {
-  sw: StopwatchData;
+  sw: Stopwatch;
   index: number;
   stop: () => void;
   lap: () => void;
@@ -27,7 +27,7 @@ export const StopwatchRow = ({ sw, index, stop, lap, remove, setName }: Stopwatc
   </HStack>
 );
 
-const CurrentTime = ({ sw }: { sw: StopwatchData }) => {
+const CurrentTime = ({ sw }: { sw: Stopwatch }) => {
   const [now, setNow] = useState<number>(Date.now());
 
   React.useEffect(() => {
