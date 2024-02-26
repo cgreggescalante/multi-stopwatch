@@ -1,7 +1,7 @@
 import { Button, Center, Heading, HStack, IconButton, Input, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { AddIcon, CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
-import { createEmptyMultiStopwatch, useMultiStopwatch, useStopwatchManager } from 'utils';
+import { MultiStopwatchUtils, useMultiStopwatch, useStopwatchManager } from 'utils';
 import { Link } from 'gatsby';
 
 const StopwatchManager = () => {
@@ -10,7 +10,7 @@ const StopwatchManager = () => {
 
   const addStopwatch = () => {
     const newId = Date.now().toString();
-    const newMultiStopwatch = createEmptyMultiStopwatch(newId);
+    const newMultiStopwatch = MultiStopwatchUtils.createEmpty(newId);
 
     localStorage.setItem(newId, JSON.stringify(newMultiStopwatch));
 

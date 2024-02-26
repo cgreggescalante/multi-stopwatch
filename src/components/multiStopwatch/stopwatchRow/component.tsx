@@ -1,6 +1,6 @@
 import { Center, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { formatMs, getCurrentLap, getElapsedTime, Stopwatch, StopwatchState } from 'utils';
+import { formatMs, StopwatchUtils, Stopwatch, StopwatchState } from 'utils';
 import { LapData } from './lapData';
 import { RowControls } from './rowControls';
 
@@ -43,9 +43,9 @@ const CurrentTime = ({ sw }: { sw: Stopwatch }) => {
       <VStack spacing={0}>
         <Text fontSize={'sm'}>{sw.laps.length + 1}</Text>
         <Text fontSize={'md'} as={'b'}>
-          {formatMs(getElapsedTime(sw, now))}
+          {formatMs(StopwatchUtils.elapsed(sw, now))}
         </Text>
-        <Text fontSize={'sm'}>{formatMs(getCurrentLap(sw, now))}</Text>
+        <Text fontSize={'sm'}>{formatMs(StopwatchUtils.currentLap(sw, now))}</Text>
       </VStack>
     </Center>
   );
