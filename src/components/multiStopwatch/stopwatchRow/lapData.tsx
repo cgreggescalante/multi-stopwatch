@@ -9,7 +9,7 @@ interface LapDataProps {
 }
 
 export const LapData = ({ laps, startTime, index }: LapDataProps) => (
-  <Box m={0} p={1}>
+  <Box m={0} p={1} borderWidth={'1px'} borderColor={'rgba(200, 200, 200, 200)'}>
     <Center>
       <VStack spacing={0}>
         <Text fontSize={'sm'}>{index + 1}</Text>

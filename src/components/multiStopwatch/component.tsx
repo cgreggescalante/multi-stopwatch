@@ -91,7 +91,9 @@ const MultiStopwatchComponent = ({ id }: { id: string }) => {
       )}
 
       {multiStopwatch.state == MultiStopwatchState.COMPLETE && (
-        <Button onClick={exportCSV}>Export CSV</Button>
+        <Button onClick={exportCSV} mt={2}>
+          Export CSV
+        </Button>
       )}
     </Box>
   );
